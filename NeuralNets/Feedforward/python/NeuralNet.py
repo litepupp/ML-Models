@@ -7,7 +7,7 @@ class NeuralNet:
         if not NPL:
             return
 
-        self.sigmoid_v = np.vectorize(lambda x: 1 / (1 + np.exp(-x)))
+        self.sigmoid = lambda x: 1 / (1 + np.exp(-x))
 
         self.NPL: list[int] = NPL
         self.layers: int = len(self.NPL)
@@ -57,7 +57,7 @@ class NeuralNet:
 
     def forward_prop(self) -> None:
         for layer in range(self.layers - 1):
-            self.activations[layer + 1] = self.sigmoid_v(
+            self.activations[layer + 1] = self.sigmoid(
                 (self.activations[layer] @ self.weights[layer]) + self.biases[layer]
             )
 
