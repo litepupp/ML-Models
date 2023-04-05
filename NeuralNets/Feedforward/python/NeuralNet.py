@@ -52,7 +52,8 @@ class NeuralNet:
                 self.update_network()
                 mean_loss += self.calculate_loss(expected_output)
 
-            print(f"Epoch[{epoch}]: Loss = {mean_loss / len(X)}")
+            mean_loss /= len(X)
+            print(f"Epoch[{epoch}]: Loss = {mean_loss}")
 
     def forward_prop(self) -> None:
         for layer in range(self.layers - 1):
@@ -68,9 +69,9 @@ class NeuralNet:
                 self.activations[layer] * (1 - self.activations[layer])
             )
 
-            self.weight_derivatives[layer - 1] = self.activations[layer - 1].reshape(
-                self.activations[layer - 1].shape[0], -1
-            ) @ (delta.reshape(1, -1))
+            self.weight_derivatives[layer - 1] = np.outer(
+                self.activations[layer - 1], delta
+            )
             self.bias_derivatives[layer - 1] = delta
 
             error = delta @ self.weights[layer - 1].T
