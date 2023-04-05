@@ -47,7 +47,7 @@ class NeuralNet:
                 self.activations[0] = training_input
 
                 self.forward_prop()
-                self.backpropagation(expected_output - self.activations[-1])
+                self.backpropagation(expected_output)
 
                 self.update_network()
                 mean_loss += self.calculate_loss(expected_output)
