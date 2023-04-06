@@ -1,7 +1,7 @@
-import React from "react";
+import DrawCanvas from "./components/DrawCanvas/DrawCanvas";
 
 function App() {
-  return <>test</>;
+  return <DrawCanvas />;
 }
 
 export default App;
