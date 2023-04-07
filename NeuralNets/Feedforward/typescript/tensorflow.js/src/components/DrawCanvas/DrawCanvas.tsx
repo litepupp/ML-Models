@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, MouseEvent, ChangeEvent } from "react";
+import { useEffect, useRef, useState, ChangeEvent, PointerEvent } from "react";
 
 interface Props {
   onSubmit: (imageData: ImageData) => any;
@@ -27,7 +27,7 @@ const DrawCanvas = (props: Props) => {
     }
   }, []);
 
-  const startDrawing = ({ nativeEvent }: MouseEvent) => {
+  const startDrawing = ({ nativeEvent }: PointerEvent) => {
     const { offsetX, offsetY } = nativeEvent;
 
     contextRef.current?.beginPath();
@@ -35,7 +35,7 @@ const DrawCanvas = (props: Props) => {
     setIsDrawing(true);
   };
 
-  const drawLine = ({ nativeEvent }: MouseEvent) => {
+  const drawLine = ({ nativeEvent }: PointerEvent) => {
     if (!isDrawing) return;
 
     const { offsetX, offsetY } = nativeEvent;
@@ -84,19 +84,19 @@ const DrawCanvas = (props: Props) => {
   return (
     <div>
       <canvas
-        style={{ border: "1px solid black" }}
+        style={{ border: "1px solid black", touchAction: "none" }}
         ref={canvasRef}
-        onMouseDown={startDrawing}
-        onMouseMove={drawLine}
-        onMouseUp={stopDrawing}
-        onMouseLeave={stopDrawing}
+        onPointerDown={startDrawing}
+        onPointerMove={drawLine}
+        onPointerUp={stopDrawing}
+        onPointerLeave={stopDrawing}
       />
       <br />
       <input type="reset" onClick={clearCanvas} />
       <input type="submit" onClick={handleSubmitCallback} />
       <br />
       <label>
-        Set Line Width
+        Line Width
         <input
           type="range"
           value={lineWidth}

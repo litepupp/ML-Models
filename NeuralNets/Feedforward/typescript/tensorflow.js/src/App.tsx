@@ -1,4 +1,5 @@
 import DrawCanvas from "./components/DrawCanvas/DrawCanvas";
+import predict from "./utils/predict";
 
 function App() {
   const handleOnSubmit = (imageData: ImageData) => {
@@ -9,6 +10,7 @@ function App() {
     );
 
     console.log(cleanedImage);
+    console.log(predict());
   };
 
   return <DrawCanvas onSubmit={handleOnSubmit} />;
