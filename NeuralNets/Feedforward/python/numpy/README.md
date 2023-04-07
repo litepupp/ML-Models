@@ -1,1 +1,1 @@
-# Feedforward Neural Network (Multilayer Perceptron) in Python using Numpy
+# Feedforward Neural Network in Python using NumPy

@@ -1,6 +1,6 @@
-# Feedforward Neural Networks (Multilayer Perceptron) in TypeScript using Tensorflow.js
+# Feedforward Neural Network in TypeScript using TensorFlow.js
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Live Build](build/index.html)
 
 ## Available Scripts
 

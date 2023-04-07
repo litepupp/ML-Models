@@ -1,1 +1,1 @@
-# Feedforward Neural Network (Multilayer Perceptron) in C++
+# Feedforward Neural Networks in C++
