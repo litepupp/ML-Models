@@ -1,17 +1,9 @@
-import DrawCanvas from "./components/DrawCanvas/DrawCanvas";
-import predict from "./utils/predict";
+import { DrawCanvas } from "./components/DrawCanvas/DrawCanvas";
+import { NeuralNet } from "./utils/NeuralNet";
+import * as tf from "@tensorflow/tfjs";
 
 function App() {
-  const handleOnSubmit = (imageData: ImageData) => {
-    const cleanedImage: number[] = Array.from(
-      imageData.data.map((value) => {
-        return value / 255;
-      })
-    );
-
-    console.log(cleanedImage);
-    console.log(predict());
-  };
+  const handleOnSubmit = (imageData: ImageData) => {};
 
   return <DrawCanvas onSubmit={handleOnSubmit} />;
 }
