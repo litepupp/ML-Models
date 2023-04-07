@@ -1,6 +1,6 @@
 # Feedforward Neural Network in TypeScript using TensorFlow.js
 
-[Live Build](build/index.html)
+[Live Build](https://litepupp.github.io/ML-Models/NeuralNets/Feedforward/typescript/tensorflow.js/build/index.html)
 
 ## Available Scripts
 
