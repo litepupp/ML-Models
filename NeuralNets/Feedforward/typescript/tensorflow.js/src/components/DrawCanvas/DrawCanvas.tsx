@@ -4,7 +4,7 @@ interface Props {
   onSubmit: (imageData: ImageData) => any;
 }
 
-const DrawCanvas = (props: Props) => {
+export const DrawCanvas = (props: Props) => {
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [lineWidth, setLineWidth] = useState<number>(5);
 
@@ -110,5 +110,3 @@ const DrawCanvas = (props: Props) => {
     </div>
   );
 };
-
-export default DrawCanvas;
