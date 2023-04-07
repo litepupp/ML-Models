@@ -1,2 +1,2 @@
 # Neural Networks
-[Feedforward Neural Networks](Feedforward/README.md)
+[Feedforward Neural Networks](Feedforward/)  
