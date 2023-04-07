@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState, MouseEvent, ChangeEvent } from "react";
 
-const DrawCanvas = () => {
+interface Props {
+  onSubmit: (imageData: ImageData) => any;
+}
+
+const DrawCanvas = (props: Props) => {
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [lineWidth, setLineWidth] = useState<number>(5);
 
@@ -17,7 +21,7 @@ const DrawCanvas = () => {
       if (context !== null) {
         context.lineCap = "round";
         context.strokeStyle = "black";
-        context.lineWidth = lineWidth;
+        context.lineWidth = 5;
         contextRef.current = context;
       }
     }
@@ -40,7 +44,7 @@ const DrawCanvas = () => {
     contextRef.current?.stroke();
   };
 
-  const stopDrawing = ({ nativeEvent }: MouseEvent) => {
+  const stopDrawing = () => {
     contextRef.current?.closePath();
     setIsDrawing(false);
   };
@@ -67,10 +71,20 @@ const DrawCanvas = () => {
     }
   };
 
+  const handleSubmitCallback = () => {
+    const canvas = canvasRef.current;
+    if (canvas !== null) {
+      const context = canvas.getContext("2d");
+      if (context !== null) {
+        props.onSubmit(context.getImageData(0, 0, canvas.width, canvas.height));
+      }
+    }
+  };
+
   return (
     <div>
       <canvas
-        className="canvas-container"
+        style={{ border: "1px solid black" }}
         ref={canvasRef}
         onMouseDown={startDrawing}
         onMouseMove={drawLine}
@@ -79,6 +93,7 @@ const DrawCanvas = () => {
       />
       <br />
       <input type="reset" onClick={clearCanvas} />
+      <input type="submit" onClick={handleSubmitCallback} />
       <br />
       <label>
         Set Line Width
@@ -90,6 +105,7 @@ const DrawCanvas = () => {
           step={1}
           onChange={handleWidthChange}
         />
+        {lineWidth} px
       </label>
     </div>
   );

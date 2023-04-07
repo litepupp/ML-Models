@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/static/js/main.fd5adbed.js",
+    "index.html": "/index.html",
+    "main.fd5adbed.js.map": "/static/js/main.fd5adbed.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.fd5adbed.js"
+  ]
+}
