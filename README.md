@@ -1,2 +1,2 @@
 # ML-Models
-[Neural Networks](NeuralNets/README.md)
+[Neural Networks](NeuralNets/)
