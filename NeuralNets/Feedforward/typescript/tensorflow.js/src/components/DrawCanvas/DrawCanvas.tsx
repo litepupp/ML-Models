@@ -2,12 +2,11 @@ import { useEffect, useRef, useState, ChangeEvent, PointerEvent } from "react";
 
 interface Props {
   onSubmit: (imageData: ImageData) => any;
-  onClear: () => void;
 }
 
 export const DrawCanvas = (props: Props) => {
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
-  const [lineWidth, setLineWidth] = useState<number>(2.5);
+  const [lineWidth, setLineWidth] = useState<number>(1.25);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -22,7 +21,7 @@ export const DrawCanvas = (props: Props) => {
       if (context !== null) {
         context.lineCap = "round";
         context.strokeStyle = "black";
-        context.lineWidth = 2.5;
+        context.lineWidth = 1.25;
         contextRef.current = context;
       }
     }
@@ -72,11 +71,6 @@ export const DrawCanvas = (props: Props) => {
     }
   };
 
-  const handleClearCallback = () => {
-    clearCanvas();
-    props.onClear();
-  };
-
   const handleSubmitCallback = () => {
     const canvas = canvasRef.current;
     if (canvas !== null) {
@@ -104,7 +98,7 @@ export const DrawCanvas = (props: Props) => {
         onPointerLeave={stopDrawing}
       />
       <br />
-      <input type="reset" onClick={handleClearCallback} />
+      <input type="reset" onClick={clearCanvas} />
       <input type="submit" onClick={handleSubmitCallback} />
       <label>
         Line Width
@@ -112,8 +106,8 @@ export const DrawCanvas = (props: Props) => {
           type="range"
           value={lineWidth}
           min={0}
-          max={5}
-          step={0.25}
+          max={3}
+          step={0.125}
           onChange={handleWidthChange}
         />
         {lineWidth} px
