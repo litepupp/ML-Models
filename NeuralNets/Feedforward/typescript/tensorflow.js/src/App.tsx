@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { DrawCanvas } from "./components/DrawCanvas/DrawCanvas";
 import * as tf from "@tensorflow/tfjs";
-import "./model/model.json";
 
 function App() {
   const [prediction, setPrediction] = useState<number[]>();
@@ -9,7 +8,9 @@ function App() {
 
   useEffect(() => {
     setPrediction([]);
-    tf.loadLayersModel("/oofdd").then((value) => setModel(value));
+    tf.loadLayersModel(process.env.PUBLIC_URL + "/models/model.json", {
+      strict: true,
+    }).then((value) => setModel(value));
   }, []);
 
   const handleOnSubmit = async (imageData: ImageData) => {
@@ -19,12 +20,12 @@ function App() {
     }
     const input: tf.Tensor1D = tf.tensor1d(pixelData);
 
+    console.log(process.env.PUBLIC_URL);
+    setPrediction([1, 2, 3, 4, 5, 6, 7, 8, 9]);
     if (model === undefined) return;
 
     const modelPrediction = model.predict(input);
     console.log(modelPrediction);
-
-    setPrediction([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   };
 
   return (
