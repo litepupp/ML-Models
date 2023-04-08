@@ -2,11 +2,12 @@ import { useEffect, useRef, useState, ChangeEvent, PointerEvent } from "react";
 
 interface Props {
   onSubmit: (imageData: ImageData) => any;
+  onClear: () => void;
 }
 
 export const DrawCanvas = (props: Props) => {
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
-  const [lineWidth, setLineWidth] = useState<number>(5);
+  const [lineWidth, setLineWidth] = useState<number>(2.5);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -14,14 +15,14 @@ export const DrawCanvas = (props: Props) => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas !== null) {
-      canvas.width = 500;
-      canvas.height = 500;
+      canvas.width = 28;
+      canvas.height = 28;
 
       const context = canvas.getContext("2d");
       if (context !== null) {
         context.lineCap = "round";
         context.strokeStyle = "black";
-        context.lineWidth = 5;
+        context.lineWidth = 2.5;
         contextRef.current = context;
       }
     }
@@ -31,7 +32,7 @@ export const DrawCanvas = (props: Props) => {
     const { offsetX, offsetY } = nativeEvent;
 
     contextRef.current?.beginPath();
-    contextRef.current?.moveTo(offsetX, offsetY);
+    contextRef.current?.moveTo(offsetX * (28 / 500), offsetY * (28 / 500));
     setIsDrawing(true);
   };
 
@@ -40,7 +41,7 @@ export const DrawCanvas = (props: Props) => {
 
     const { offsetX, offsetY } = nativeEvent;
 
-    contextRef.current?.lineTo(offsetX, offsetY);
+    contextRef.current?.lineTo(offsetX * (28 / 500), offsetY * (28 / 500));
     contextRef.current?.stroke();
   };
 
@@ -71,6 +72,11 @@ export const DrawCanvas = (props: Props) => {
     }
   };
 
+  const handleClearCallback = () => {
+    clearCanvas();
+    props.onClear();
+  };
+
   const handleSubmitCallback = () => {
     const canvas = canvasRef.current;
     if (canvas !== null) {
@@ -84,7 +90,13 @@ export const DrawCanvas = (props: Props) => {
   return (
     <div>
       <canvas
-        style={{ border: "1px solid black", touchAction: "none" }}
+        style={{
+          border: "1px solid black",
+          touchAction: "none",
+          imageRendering: "pixelated",
+          width: "500px",
+          height: "500px",
+        }}
         ref={canvasRef}
         onPointerDown={startDrawing}
         onPointerMove={drawLine}
@@ -92,17 +104,16 @@ export const DrawCanvas = (props: Props) => {
         onPointerLeave={stopDrawing}
       />
       <br />
-      <input type="reset" onClick={clearCanvas} />
+      <input type="reset" onClick={handleClearCallback} />
       <input type="submit" onClick={handleSubmitCallback} />
-      <br />
       <label>
         Line Width
         <input
           type="range"
           value={lineWidth}
-          min={1}
-          max={10}
-          step={1}
+          min={0}
+          max={5}
+          step={0.25}
           onChange={handleWidthChange}
         />
         {lineWidth} px
