@@ -3,11 +3,19 @@ import numpy.typing
 
 
 class NeuralNet:
-    def __init__(self, NPL: list[int], learning_rate: float = 0.01) -> None:
+    def __init__(
+        self,
+        NPL: list[int],
+        learning_rate: float = 0.01,
+        activation_function: str = "sigmoid",
+    ) -> None:
         if not NPL:
             return
 
-        self.sigmoid = lambda x: 1 / (1 + np.exp(-x))
+        if activation_function == "sigmoid":
+            self.activation_function = lambda x: 1.0 / (1.0 + np.exp(-x))
+        elif activation_function == "relu":
+            self.activation_function = lambda x: x if x > 0.0 else 0.0
 
         self.NPL: list[int] = NPL
         self.layers: int = len(self.NPL)
@@ -57,7 +65,7 @@ class NeuralNet:
 
     def forward_prop(self) -> None:
         for layer in range(self.layers - 1):
-            self.activations[layer + 1] = self.sigmoid(
+            self.activations[layer + 1] = self.activation_function(
                 (self.activations[layer] @ self.weights[layer]) + self.biases[layer]
             )
 
