@@ -61,12 +61,13 @@ export const DrawCanvas = (props: Props) => {
   };
 
   const handleWidthChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setLineWidth(Number(event.target.value));
+    const newLineWidth = Number(event.target.value);
+    setLineWidth(newLineWidth);
     const canvas = canvasRef.current;
     if (canvas !== null) {
       const context = canvas.getContext("2d");
       if (context !== null) {
-        context.lineWidth = lineWidth;
+        context.lineWidth = newLineWidth;
       }
     }
   };

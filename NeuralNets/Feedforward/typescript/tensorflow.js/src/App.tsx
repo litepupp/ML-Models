@@ -1,33 +1,57 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DrawCanvas } from "./components/DrawCanvas/DrawCanvas";
+import {
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  LineChart,
+  Line,
+} from "recharts";
 import * as tf from "@tensorflow/tfjs";
 
 function App() {
-  const [model, setModel] = useState<tf.LayersModel>();
+  const [predictions, setPredictions] = useState<
+    { name: number; value: number }[]
+  >([]);
 
-  useEffect(() => {
-    tf.loadLayersModel(process.env.PUBLIC_URL + "/models/model.json", {
-      strict: true,
-    }).then((value) => setModel(value));
-  }, []);
+  const handleOnSubmit = async (imageData: ImageData) => {
+    let model = await tf.loadLayersModel(
+      process.env.PUBLIC_URL + "/models/model.json",
+      {
+        strict: true,
+      }
+    );
 
-  const handleOnSubmit = (imageData: ImageData) => {
     let pixelData = [];
-    for (let i = 3; i < imageData.data.length; i += 4) {
-      pixelData.push(imageData.data[i] / 255);
+    for (let i = 0; i < imageData.data.length; i += 4) {
+      pixelData.push(Math.abs(imageData.data[i] / 255 - 1));
     }
     let input: tf.Tensor1D = tf.tensor1d(pixelData).reshape([1, 784]);
 
-    console.log(input.dataSync());
-
-    if (model === undefined) return;
-
-    console.log(model.predict(input).dataSync());
+    setPredictions(
+      Array.from(
+        (model.predict(input) as tf.Tensor).dataSync(),
+        (value, index) => ({ name: index, value: value })
+      )
+    );
   };
 
   return (
     <>
       <DrawCanvas onSubmit={handleOnSubmit} />
+      <LineChart
+        width={600}
+        height={300}
+        data={predictions}
+        margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+      >
+        <Line type="monotone" dataKey="value" stroke="#8884d8" />
+        <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+      </LineChart>
     </>
   );
 }
