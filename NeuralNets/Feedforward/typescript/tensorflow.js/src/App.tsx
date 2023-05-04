@@ -9,11 +9,22 @@ import {
   Line,
 } from "recharts";
 import * as tf from "@tensorflow/tfjs";
+import { NeuralNet } from "./utils/NeuralNet";
 
-function App() {
+const App = () => {
   const [predictions, setPredictions] = useState<
     { name: number; value: number }[]
   >([]);
+
+  /*
+  
+    Array.from(
+      model.activations[model.layers - 1].dataSync(),
+      (value, index) => ({ name: index, value: value })
+    )
+    model.activations[0] = input;
+    model.forwardprop();
+  */
 
   const handleOnSubmit = async (imageData: ImageData) => {
     let model = await tf.loadLayersModel(
@@ -21,7 +32,7 @@ function App() {
       {
         strict: true,
       }
-    );
+    ); // new NeuralNet([784, 100, 10], 0.3);
 
     let pixelData = [];
     for (let i = 0; i < imageData.data.length; i += 4) {
@@ -54,6 +65,6 @@ function App() {
       </LineChart>
     </>
   );
-}
+};
 
-export default App;
+export { App };
